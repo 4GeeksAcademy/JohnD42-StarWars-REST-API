@@ -1,4 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy, update
+from flask_sqlalchemy import SQLAlchemy
 
 
 db = SQLAlchemy()
@@ -6,7 +6,7 @@ db = SQLAlchemy()
 class Planet(db.Model):
     __tablename__ = 'planet'
 
-    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     name = db.Column(db.String(250), unique=True, primary_key=True)
     diameter = db.Column(db.Float, unique=False, nullable=True)
     rotation_period = db.Column(db.Float, unique=False, nullable=True)
@@ -33,7 +33,7 @@ class Planet(db.Model):
 class Character(db.Model):
     __tablename__ = 'character'
 
-    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     name = db.Column(db.String, unique=True, primary_key=True)
     height = db.Column(db.Integer, unique=False, nullable=True)
     mass = db.Column(db.Integer, unique=False, nullable=True)
@@ -61,7 +61,7 @@ class Character(db.Model):
 class User(db.Model):
     __tablename__ = 'user'
 
-    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     user_name = db.Column(db.String(250), unique=True, nullable=False)
     email = db.Column(db.String(250), unique=True, nullable=False)
     password = db.Column(db.String(250), unique=False, nullable=False)
@@ -79,7 +79,7 @@ class User(db.Model):
 class Favorite(db.Model):
     __tablename__ = 'favorite'
 
-    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     planet_id = db.Column(db.Integer, db.ForeignKey('planet.id'))
     character_id = db.Column(db.Integer, db.ForeignKey('character.id'))
@@ -93,5 +93,4 @@ class Favorite(db.Model):
             "planet_id": self.planet_id,
             "character_id": self.character_id,
         }
-
 

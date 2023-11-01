@@ -16,6 +16,7 @@ app.url_map.strict_slashes = False
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url.replace("postgres://", "postgresql://")
+    
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -88,7 +89,10 @@ def handle_users():
 
 @app.route('/users/favorites', methods=['GET'])
 def handle_user_favorites():
-    return None
+
+    response_body = []
+
+    return jsonify(response_body), 200
 
 @app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
 def handle_adding_fav_planet():
