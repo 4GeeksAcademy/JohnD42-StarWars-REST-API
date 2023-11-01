@@ -38,17 +38,109 @@ def sitemap():
 @app.route('/people', methods=['GET'])
 def handle_people():
     people = Character.query.all()
-    print(people)
+    results = []
+    for person in people:
+        serialized = person.serialize()
+        results.append({
+            "uid": serialized.id,
+            "name": serialized.name,
+            "url": serialized.url
 
+        })
+    return jsonify(results), 200
 
-@app.route('/user', methods=['GET'])
-def handle_hello():
+@app.route('/people/<int:people_id>', methods=['GET'])
+def handle_person():
+    people = Character.query.all()
+    for person in people:
+        if person.serialize().id == people_id:
+            return jsonify(person.serialize()), 200
+        
+@app.route('/planets', methods=['GET'])
+def handle_planets():
+    planets = Planet.query.all()
+    results = []
+    for planet in planets:
+        serialized = planet.serialize()
+        results.append({
+            "uid": serialized.id,
+            "name": serialized.name,
+            "url": serialized.url
 
-    response_body = {
-        "msg": "Hello, this is your GET /user response "
-    }
+        })
+    return jsonify(results), 200
+
+@app.route('/planets/<int:planet_id>', methods=['GET'])
+def handle_pelanet():
+    planets = Planet.query.all()
+    for planet in planets:
+        if planet.serialize().id == planet_id:
+            return jsonify(planet.serialize()), 200
+
+@app.route('/users', methods=['GET'])
+def handle_users():
+    users = User.query.all()
+    response_body = []
+    for user in users:
+        response_body.append(user.serialize())
 
     return jsonify(response_body), 200
+
+@app.route('/users/favorites', methods=['GET'])
+def handle_user_favorites():
+    return None
+
+@app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
+def handle_adding_fav_planet():
+    planets = Planet.query.all()
+    selected_planet = None
+    for planet in planets:
+        if planet.serialize().id == planet_id:
+            selected_planet = planet
+    if selected_planet == None:
+        return jsonify({"Invalid planet ID."}), 400
+    else:
+        #Incomplete
+        return jsonify({"Favorite added successfully."}), 200
+
+@app.route('/favorite/character/<int:character_id>', methods=['POST'])
+def handle_adding_fav_character():
+    chars = Character.query.all()
+    selected_char = None
+    for char in chars:
+        if char.serialize().id == character_id:
+            selected_char = char
+    if selected_char == None:
+        return jsonify({"Invalid character ID."}), 400
+    else:
+        #Incomplete
+        return jsonify({"Favorite added successfully."}), 200
+    
+@app.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
+def handle_deleting_fav_planet():
+    selected_planet = None
+    planets = Planet.query.all()
+    for planet in planets:
+        if planet.serialize().id == planet_id:
+            selected_planet = planet
+    if selected_planet == None:
+        return jsonify({"Invalid planet ID."}), 400
+    else:
+        #Incomplete
+        return jsonify({"Favorite deleted successfully."}), 200
+
+@app.route('/favorite/planet/<int:character_id>', methods=['DELETE'])
+def handle_deleting_fav_character():
+    chars = Character.query.all()
+    selected_char = None
+    for char in chars:
+        if char.serialize().id == character_id:
+            selected_char = char
+    if selected_char == None:
+        return jsonify({"Invalid character ID."}), 400
+    else:
+        #Incomplete
+        return jsonify({"Favorite deleted successfully."}), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
