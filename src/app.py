@@ -118,28 +118,32 @@ def handle_adding_fav_character():
     
 @app.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
 def handle_deleting_fav_planet():
-    selected_planet = None
-    planets = Planet.query.all()
-    for planet in planets:
-        if planet.serialize().id == planet_id:
-            selected_planet = planet
-    if selected_planet == None:
-        return jsonify({"Invalid planet ID."}), 400
-    else:
-        #Incomplete
-        return jsonify({"Favorite deleted successfully."}), 200
-
-@app.route('/favorite/planet/<int:character_id>', methods=['DELETE'])
-def handle_deleting_fav_character():
-    chars = Character.query.all()
-    selected_char = None
-    for char in chars:
-        if char.serialize().id == character_id:
-            selected_char = char
+    favs = Favorite.query.all()
+    selected_fav = None
+    for fav in favs:
+        if fav.serialize().planet_id == planet_id:
+            selected_fav = fav
     if selected_char == None:
         return jsonify({"Invalid character ID."}), 400
     else:
         #Incomplete
+        db.session.delete(selected_char)
+        db.session.commit()
+        return jsonify({"Favorite deleted successfully."}), 200
+
+@app.route('/favorite/character/<int:character_id>', methods=['DELETE'])
+def handle_deleting_fav_character():
+    favs = Favorite.query.all()
+    selected_fav = None
+    for fav in favs:
+        if fav.serialize().character_id == character_id:
+            selected_fav = fav
+    if selected_char == None:
+        return jsonify({"Invalid character ID."}), 400
+    else:
+        #Incomplete
+        db.session.delete(selected_char)
+        db.session.commit()
         return jsonify({"Favorite deleted successfully."}), 200
 
 # this only runs if `$ python src/app.py` is executed
