@@ -42,19 +42,20 @@ def handle_people():
     for person in people:
         serialized = person.serialize()
         results.append({
-            "uid": serialized.id,
-            "name": serialized.name,
-            "url": serialized.url
-
+            "uid": serialized['id'],
+            "name": serialized['name'],
+            "url": serialized['url']
         })
     return jsonify(results), 200
 
 @app.route('/people/<int:people_id>', methods=['GET'])
-def handle_person():
-    people = Character.query.all()
-    for person in people:
-        if person.serialize().id == people_id:
-            return jsonify(person.serialize()), 200
+def handle_person(people_id):
+    person = Character.query.get(people_id)
+    if person != None:
+        return jsonify(person.serialize()), 200
+    else:
+        return jsonify({'Invalid person ID.'}), 400
+        
         
 @app.route('/planets', methods=['GET'])
 def handle_planets():
@@ -63,19 +64,19 @@ def handle_planets():
     for planet in planets:
         serialized = planet.serialize()
         results.append({
-            "uid": serialized.id,
-            "name": serialized.name,
-            "url": serialized.url
-
+            "uid": serialized['id'],
+            "name": serialized['name'],
+            "url": serialized['url']
         })
     return jsonify(results), 200
 
 @app.route('/planets/<int:planet_id>', methods=['GET'])
-def handle_pelanet():
-    planets = Planet.query.all()
-    for planet in planets:
-        if planet.serialize().id == planet_id:
-            return jsonify(planet.serialize()), 200
+def handle_planet(planet_id):
+    planet = Planet.query.get(planet_id)
+    if planet != None:
+        return jsonify(planet.serialize()), 200
+    else:
+        return jsonify('Invalid planet ID.'), 400
 
 @app.route('/users', methods=['GET'])
 def handle_users():
@@ -88,60 +89,59 @@ def handle_users():
 
 @app.route('/users/favorites', methods=['GET'])
 def handle_user_favorites():
-
-    response_body = []
-
-    return jsonify(response_body), 200
+    user = User.query.get(1)
+    return jsonify(user.serialize()['favorites']), 200
 
 @app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
-def handle_adding_fav_planet():
-    planets = Planet.query.all()
-    selected_planet = None
-    for planet in planets:
-        if planet.serialize().id == planet_id:
-            selected_planet = planet
+def handle_adding_fav_planet(planet_id):
+    selected_planet = Planet.query.get(planet_id)
     if selected_planet == None:
-        return jsonify({"Invalid planet ID."}), 400
+        return jsonify("Invalid planet ID."), 400
     else:
-        #Incomplete
-        return jsonify({"Favorite added successfully."}), 200
+        favorite = Favorite(user_id = 1, planet_id = planet_id)
+        if Favorite.query.filter_by(planet_id = planet_id).first() == None:
+            db.session.add(favorite)
+            db.session.commit()
+            return jsonify("Favorite added successfully."), 200
+        else:
+            return jsonify("Favorite already exists"), 400
 
 @app.route('/favorite/character/<int:character_id>', methods=['POST'])
-def handle_adding_fav_character():
-    chars = Character.query.all()
-    selected_char = None
-    for char in chars:
-        if char.serialize().id == character_id:
-            selected_char = char
-    if selected_char == None:
-        return jsonify({"Invalid character ID."}), 400
+def handle_adding_fav_character(character_id):
+    selected_character = Character.query.get(character_id)
+    if selected_character == None:
+        return jsonify("Invalid planet ID."), 400
     else:
-        #Incomplete
-        return jsonify({"Favorite added successfully."}), 200
+        favorite = Favorite(user_id = 1, character_id = character_id)
+        if Favorite.query.filter_by(character_id = character_id).first() == None:
+            db.session.add(favorite)
+            db.session.commit()
+            return jsonify("Favorite added successfully."), 200
+        else:
+            return jsonify("Favorite already exists"), 400
     
 @app.route('/favorite/planet/<int:planet_id>', methods=['DELETE'])
-def handle_deleting_fav_planet():
+def handle_deleting_fav_planet(planet_id):
     favs = Favorite.query.all()
     selected_fav = None
     for fav in favs:
-        if fav.serialize().planet_id == planet_id:
+        if fav.serialize()['planet_id'] == planet_id:
             selected_fav = fav
-    if selected_char == None:
-        return jsonify({"Invalid character ID."}), 400
+    if selected_fav == None:
+        return jsonify("Invalid character ID."), 400
     else:
-        #Incomplete
         db.session.delete(selected_fav)
         db.session.commit()
-        return jsonify({"Favorite deleted successfully."}), 200
+        return jsonify("Favorite deleted successfully."), 200
 
 @app.route('/favorite/character/<int:character_id>', methods=['DELETE'])
-def handle_deleting_fav_character():
+def handle_deleting_fav_character(character_id):
     favs = Favorite.query.all()
     selected_fav = None
     for fav in favs:
-        if fav.serialize().character_id == character_id:
+        if fav.serialize()['character_id'] == character_id:
             selected_fav = fav
-    if selected_char == None:
+    if selected_fav == None:
         return jsonify({"Invalid character ID."}), 400
     else:
         #Incomplete
