@@ -127,7 +127,7 @@ def handle_deleting_fav_planet():
         return jsonify({"Invalid character ID."}), 400
     else:
         #Incomplete
-        db.session.delete(selected_char)
+        db.session.delete(selected_fav)
         db.session.commit()
         return jsonify({"Favorite deleted successfully."}), 200
 
@@ -142,7 +142,7 @@ def handle_deleting_fav_character():
         return jsonify({"Invalid character ID."}), 400
     else:
         #Incomplete
-        db.session.delete(selected_char)
+        db.session.delete(selected_fav)
         db.session.commit()
         return jsonify({"Favorite deleted successfully."}), 200
 
