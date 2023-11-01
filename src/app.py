@@ -54,7 +54,7 @@ def handle_person(people_id):
     if person != None:
         return jsonify(person.serialize()), 200
     else:
-        return jsonify({'Invalid person ID.'}), 400
+        return jsonify('Invalid person ID.'), 400
         
         
 @app.route('/planets', methods=['GET'])
@@ -94,7 +94,7 @@ def handle_user_favorites():
 
 @app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
 def handle_adding_fav_planet(planet_id):
-    selected_planet = Planet.query.get(planet_id)
+    selected_planet = Planet.query.get('planet_id')
     if selected_planet == None:
         return jsonify("Invalid planet ID."), 400
     else:
@@ -142,12 +142,12 @@ def handle_deleting_fav_character(character_id):
         if fav.serialize()['character_id'] == character_id:
             selected_fav = fav
     if selected_fav == None:
-        return jsonify({"Invalid character ID."}), 400
+        return jsonify("Invalid character ID."), 400
     else:
         #Incomplete
         db.session.delete(selected_fav)
         db.session.commit()
-        return jsonify({"Favorite deleted successfully."}), 200
+        return jsonify("Favorite deleted successfully."), 200
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':

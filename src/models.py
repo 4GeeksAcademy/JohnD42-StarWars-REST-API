@@ -15,6 +15,9 @@ class Planet(db.Model):
     surface_water = db.Column(db.String(250), unique=False, nullable=True)
     url = db.Column(db.String(250), unique=True, nullable=False)
 
+    def __repr__(self):
+        return '<Planet %r>' % self.name
+
     def serialize(self):
         return {
             "id": self.id,
@@ -43,6 +46,9 @@ class Character(db.Model):
     planet = db.relationship("Planet")
     url = db.Column(db.String(250), unique=True, nullable=False)
 
+    def __repr__(self):
+        return '<Character %r>' % self.name
+
     def serialize(self):
         return {
             "id": self.id,
@@ -65,6 +71,9 @@ class User(db.Model):
     password = db.Column(db.String(250), unique=False, nullable=False)
     favorites = db.relationship('Favorite', backref='user')
 
+    def __repr__(self):
+        return '<User %r>' % self.name
+
     def serialize(self):
         return {
             "id": self.id,
@@ -83,6 +92,9 @@ class Favorite(db.Model):
     character_id = db.Column(db.Integer, db.ForeignKey('character.id'), nullable=True)
     planet = db.relationship("Planet")
     character = db.relationship("Character")
+
+    def __repr__(self):
+        return '<Favorite %r>' % self.id
 
     def serialize(self):
         return {
