@@ -57,7 +57,7 @@ class Character(db.Model):
             "mass": self.mass,
             "hair_color": self.hair_color,
             "eye_color": self.eye_color,
-            "sex": self.sex,
+            "gender": self.gender,
             "homeworld": self.homeworld,
             "url": self.url
         }
