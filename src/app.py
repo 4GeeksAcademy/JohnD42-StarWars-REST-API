@@ -94,7 +94,7 @@ def handle_user_favorites():
 
 @app.route('/favorite/planet/<int:planet_id>', methods=['POST'])
 def handle_adding_fav_planet(planet_id):
-    selected_planet = Planet.query.get('planet_id')
+    selected_planet = Planet.query.get(planet_id)
     if selected_planet == None:
         return jsonify("Invalid planet ID."), 400
     else:
