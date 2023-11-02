@@ -41,7 +41,7 @@ class Character(db.Model):
     mass = db.Column(db.Integer, unique=False, nullable=True)
     hair_color = db.Column(db.String(16), unique=False, nullable=True)
     eye_color = db.Column(db.String(16), unique=False, nullable=True)
-    sex = db.Column(db.String(16), unique=False, nullable=True)
+    gender = db.Column(db.String(16), unique=False, nullable=True)
     homeworld = db.Column(db.String(250), db.ForeignKey('planet.url'))
     planet = db.relationship("Planet")
     url = db.Column(db.String(250), unique=True, nullable=False)

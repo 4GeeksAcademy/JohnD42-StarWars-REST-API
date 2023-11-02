@@ -152,11 +152,28 @@ def handle_deleting_fav_character(character_id):
 @app.route('/planet', methods=['POST'])
 def handle_add_planet():
     request_data = request.get_json()
-    return None
+    planets = Planet.query.all()
+    if request_data['name'] is None or len([planet for planet in planets if planet['name'] == request_data['name']]) > 0:
+        return jsonify("A unique name is required."), 400
+    if request_data['url'] is None or len([planet for planet in planets if planet['url'] == request_data['url']]) > 0:
+        return jsonify("A unique URL is required."), 400
+    new_planet = Planet(name = request_data['name'], diameter=request_data['diameter'], rotation_period = request_data['rotation_period'], gravity = request_data['gravity'], climate = request_data['climate'], terrain = request_data['terrain'], surface_water = request_data['surface_water'], url = request_data['url'])
+    db.session.add(new_planet)
+    db.session.commit()
+    return jsonify("Planet added successfully.")
 
 @app.route('/character', methods=['POST'])
 def handle_add_character():
-    return None
+    request_data = request.get_json()
+    characters = Character.query.all()
+    if request_data['name'] is None or len([char for char in characters if char['name'] == request_data['name']]) > 0:
+        return jsonify("A unique name is required."), 400
+    if request_data['url'] is None or len([char for char in characters if char['url'] == request_data['url']]) > 0:
+        return jsonify("A unique URL is required."), 400
+    new_planet = Character(name = request_data['name'], height = request_data["height"], mass = request_data['mass'], hair_color = request_data['hair_color'], eye_color = request_data['eye_color'], gender = request_data['gender'], homeworld = request_data['homeworld'], url = request_data['url'])
+    db.session.add(new_planet)
+    db.session.commit()
+    return jsonify("Planet added successfully.")
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
