@@ -7,9 +7,9 @@ class Planet(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(250), unique=True, nullable=False)
-    diameter = db.Column(db.Float, unique=False, nullable=True)
-    rotation_period = db.Column(db.Float, unique=False, nullable=True)
-    gravity = db.Column(db.Float, unique=False, nullable=True)
+    diameter = db.Column(db.String(250), unique=False, nullable=True)
+    rotation_period = db.Column(db.String(250), unique=False, nullable=True)
+    gravity = db.Column(db.String(250), unique=False, nullable=True)
     climate = db.Column(db.String(250), unique=False, nullable=True)
     terrain = db.Column(db.String(250), unique=False, nullable=True)
     surface_water = db.Column(db.String(250), unique=False, nullable=True)
@@ -37,8 +37,8 @@ class Character(db.Model):
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String, unique=True, nullable=False)
-    height = db.Column(db.Integer, unique=False, nullable=True)
-    mass = db.Column(db.Integer, unique=False, nullable=True)
+    height = db.Column(db.String(250), unique=False, nullable=True)
+    mass = db.Column(db.String(250), unique=False, nullable=True)
     hair_color = db.Column(db.String(16), unique=False, nullable=True)
     eye_color = db.Column(db.String(16), unique=False, nullable=True)
     gender = db.Column(db.String(16), unique=False, nullable=True)
@@ -72,7 +72,7 @@ class User(db.Model):
     favorites = db.relationship('Favorite', backref='user')
 
     def __repr__(self):
-        return '<User %r>' % self.name
+        return '<User %r>' % self.user_name
 
     def serialize(self):
         return {
