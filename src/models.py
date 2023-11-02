@@ -6,7 +6,7 @@ class Planet(db.Model):
     __tablename__ = 'planet'
     
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    name = db.Column(db.String(250), unique=True)
+    name = db.Column(db.String(250), unique=True, nullable=False)
     diameter = db.Column(db.Float, unique=False, nullable=True)
     rotation_period = db.Column(db.Float, unique=False, nullable=True)
     gravity = db.Column(db.Float, unique=False, nullable=True)
@@ -36,7 +36,7 @@ class Character(db.Model):
     __tablename__ = 'character'
 
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    name = db.Column(db.String, unique=True)
+    name = db.Column(db.String, unique=True, nullable=False)
     height = db.Column(db.Integer, unique=False, nullable=True)
     mass = db.Column(db.Integer, unique=False, nullable=True)
     hair_color = db.Column(db.String(16), unique=False, nullable=True)

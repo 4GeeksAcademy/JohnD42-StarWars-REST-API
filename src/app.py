@@ -149,6 +149,15 @@ def handle_deleting_fav_character(character_id):
         db.session.commit()
         return jsonify("Favorite deleted successfully."), 200
 
+@app.route('/planet', methods=['POST'])
+def handle_add_planet():
+    request_data = request.get_json()
+    return None
+
+@app.route('/character', methods=['POST'])
+def handle_add_character():
+    return None
+
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
